@@ -1,0 +1,15 @@
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const Empresa = require("./Empresa");
+
+const Usuario = sequelize.define("Usuario", {
+  nome: { type: DataTypes.STRING, allowNull: false },
+  email: { type: DataTypes.STRING, unique: true },
+  senha: { type: DataTypes.STRING },
+  role: { type: DataTypes.STRING, defaultValue: "admin" }
+});
+
+Empresa.hasMany(Usuario);
+Usuario.belongsTo(Empresa);
+
+module.exports = Usuario;
