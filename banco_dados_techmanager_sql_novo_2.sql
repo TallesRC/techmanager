@@ -1,11 +1,25 @@
-CREATE DATABASE techmanager CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- =====================================================
+-- 🔥 TECHMANAGER - BANCO COMPLETO SaaS MULTIEMPRESA
+-- =====================================================
 
+DROP DATABASE IF EXISTS techmanager;
+
+CREATE DATABASE IF NOT EXISTS techmanager CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE techmanager;
 
+DROP TABLE IF EXISTS pagamentos;
+DROP TABLE IF EXISTS itens_ordem;
+DROP TABLE IF EXISTS ordens;
+DROP TABLE IF EXISTS estoque;
+DROP TABLE IF EXISTS equipamentos;
+DROP TABLE IF EXISTS clientes;
+DROP TABLE IF EXISTS usuarios;
+DROP TABLE IF EXISTS empresas;
+
 -- =====================================
--- TABELA EMPRESAS
+-- 1. EMPRESAS
 -- =====================================
-CREATE TABLE empresas (
+CREATE TABLE IF NOT EXISTS empresas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
     cnpj VARCHAR(20),
@@ -16,9 +30,9 @@ CREATE TABLE empresas (
 );
 
 -- =====================================
--- TABELA USUARIOS
+-- 2. USUARIOS
 -- =====================================
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
@@ -31,9 +45,9 @@ CREATE TABLE usuarios (
 );
 
 -- =====================================
--- CLIENTES
+-- 3. CLIENTES
 -- =====================================
-CREATE TABLE clientes (
+CREATE TABLE IF NOT EXISTS clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
@@ -48,9 +62,25 @@ CREATE TABLE clientes (
 );
 
 -- =====================================
--- EQUIPAMENTOS
+-- 4. ESTOQUE
 -- =====================================
-CREATE TABLE equipamentos (
+CREATE TABLE IF NOT EXISTS estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    nome VARCHAR(150) NOT NULL,
+    quantidade INT DEFAULT 0,
+    custo DECIMAL(10,2),
+    preco DECIMAL(10,2),
+    estoque_minimo INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+);
+
+-- =====================================
+-- 5. EQUIPAMENTOS
+-- =====================================
+CREATE TABLE IF NOT EXISTS equipamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     cliente_id INT NOT NULL,
@@ -65,25 +95,9 @@ CREATE TABLE equipamentos (
 );
 
 -- =====================================
--- ESTOQUE
+-- 6. ORDENS
 -- =====================================
-CREATE TABLE estoque (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    empresa_id INT NOT NULL,
-    nome VARCHAR(150) NOT NULL,
-    quantidade INT DEFAULT 0,
-    custo DECIMAL(10,2),
-    preco DECIMAL(10,2),
-    estoque_minimo INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
-);
-
--- =====================================
--- ORDENS DE SERVIÇO
--- =====================================
-CREATE TABLE ordens (
+CREATE TABLE IF NOT EXISTS ordens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     numero VARCHAR(50),
@@ -105,9 +119,9 @@ CREATE TABLE ordens (
 );
 
 -- =====================================
--- ITENS DA ORDEM
+-- 7. ITENS ORDEM
 -- =====================================
-CREATE TABLE itens_ordem (
+CREATE TABLE IF NOT EXISTS itens_ordem (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ordem_id INT NOT NULL,
     estoque_id INT NOT NULL,
@@ -120,9 +134,9 @@ CREATE TABLE itens_ordem (
 );
 
 -- =====================================
--- PAGAMENTOS
+-- 8. PAGAMENTOS
 -- =====================================
-CREATE TABLE pagamentos (
+CREATE TABLE IF NOT EXISTS pagamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ordem_id INT NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
@@ -132,17 +146,3 @@ CREATE TABLE pagamentos (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (ordem_id) REFERENCES ordens(id) ON DELETE CASCADE
 );
-
-show databases;
-show tables;
-select * FROM usuarios;
-select * FROM empresas;
-select * FROM equipamentos;
-
-DESCRIBE Usuarios;
-
-SHOW DATABASES;
-show tables;
-
-
-
