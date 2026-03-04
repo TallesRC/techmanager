@@ -20,7 +20,15 @@ exports.criar = async (req, res) => {
       EmpresaId: empresaId
     });
 
-    res.status(201).json(usuario);
+    const usuarioSemSenha = {
+  id: usuario.id,
+  nome: usuario.nome,
+  email: usuario.email,
+  role: usuario.role,
+  EmpresaId: usuario.EmpresaId
+};
+
+res.status(201).json(usuarioSemSenha);
   } catch (error) {
     res.status(400).json({ erro: error.message });
   }
