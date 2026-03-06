@@ -1,36 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-/*function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Clientes from "./pages/Clientes";
+import Equipamentos from "./pages/Equipamentos";
+import OrdensServico from "./pages/OrdensServico";
 
-export default App; */
+import LayoutSidebar from "./components/LayoutSidebar";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-500">
-      <h1 className="text-4xl font-bold text-white">
-        Tailwind funcionando! 🎉
-      </h1>
-    </div>
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route path="/" element={<Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <LayoutSidebar>
+                <Dashboard />
+              </LayoutSidebar>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/clientes"
+          element={
+            <PrivateRoute>
+              <LayoutSidebar>
+                <Clientes />
+              </LayoutSidebar>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/equipamentos"
+          element={
+            <PrivateRoute>
+              <LayoutSidebar>
+                <Equipamentos />
+              </LayoutSidebar>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/ordens"
+          element={
+            <PrivateRoute>
+              <LayoutSidebar>
+                <OrdensServico />
+              </LayoutSidebar>
+            </PrivateRoute>
+          }
+        />
+
+      </Routes>
+
+    </BrowserRouter>
   );
 }
 
