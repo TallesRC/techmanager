@@ -76,11 +76,14 @@ const login = async (req, res) => {
     }
 
     // compara senha
-    const senhaValida = await bcrypt.compare(senha, usuario.senha);
-    if (!senhaValida) {
-      return res.status(400).json({ error: "Senha inválida" });
-    }
-
+    //const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    //if (!senhaValida) {
+    //  return res.status(400).json({ error: "Senha inválida" });
+   // }
+// Ao invés de bcrypt.compare
+if (usuario.senha !== req.body.senha) {
+  return res.status(400).json({ error: "Login inválido" });
+}
     // gera token JWT
     const token = jwt.sign(
       {

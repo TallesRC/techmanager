@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
-export default function Login() {
+function Login() {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
-  const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -19,13 +16,15 @@ export default function Login() {
         senha
       });
 
-      localStorage.setItem("token", response.data.token);
+      const token = response.data.token;
 
-      navigate("/dashboard");
+      localStorage.setItem("token", token);
+
+      window.location.href = "/dashboard";
 
     } catch (error) {
 
-      alert("Login inválido");
+      alert("Email ou senha inválidos");
 
     }
 
@@ -37,17 +36,15 @@ export default function Login() {
 
       <form
         onSubmit={handleLogin}
-        className="bg-white p-10 rounded shadow w-96"
+        className="bg-white p-8 rounded shadow-md w-96"
       >
 
-        <h1 className="text-2xl font-bold mb-6 text-center">
-          TechManager
-        </h1>
+        <h2 className="text-2xl mb-6 text-center">Login</h2>
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-2 border mb-4"
+          className="w-full mb-4 p-2 border"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -55,12 +52,13 @@ export default function Login() {
         <input
           type="password"
           placeholder="Senha"
-          className="w-full p-2 border mb-6"
+          className="w-full mb-4 p-2 border"
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         />
 
         <button
+          type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded"
         >
           Entrar
@@ -71,4 +69,7 @@ export default function Login() {
     </div>
 
   );
+
 }
+
+export default Login;
