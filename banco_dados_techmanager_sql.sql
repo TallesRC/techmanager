@@ -1,24 +1,11 @@
--- =====================================================
--- 🔥 TECHMANAGER - BANCO COMPLETO SaaS MULTIEMPRESA
--- =====================================================
-DROP DATABASE IF EXISTS techmanager;
+CREATE DATABASE techmanager CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS techmanager CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE techmanager;
 
-DROP TABLE IF EXISTS pagamentos;
-DROP TABLE IF EXISTS itens_ordem;
-DROP TABLE IF EXISTS ordens;
-DROP TABLE IF EXISTS estoque;
-DROP TABLE IF EXISTS equipamentos;
-DROP TABLE IF EXISTS clientes;
-DROP TABLE IF EXISTS usuarios;
-DROP TABLE IF EXISTS empresas;
-
 -- =====================================
--- 1. EMPRESAS
+-- TABELA EMPRESAS
 -- =====================================
-CREATE TABLE IF NOT EXISTS empresas (
+CREATE TABLE empresas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
     cnpj VARCHAR(20),
@@ -29,9 +16,9 @@ CREATE TABLE IF NOT EXISTS empresas (
 );
 
 -- =====================================
--- 2. USUARIOS
+-- TABELA USUARIOS
 -- =====================================
-CREATE TABLE IF NOT EXISTS usuarios (
+CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
@@ -44,9 +31,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- =====================================
--- 3. CLIENTES
+-- CLIENTES
 -- =====================================
-CREATE TABLE IF NOT EXISTS clientes (
+CREATE TABLE clientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     nome VARCHAR(150) NOT NULL,
@@ -61,25 +48,9 @@ CREATE TABLE IF NOT EXISTS clientes (
 );
 
 -- =====================================
--- 4. ESTOQUE
+-- EQUIPAMENTOS
 -- =====================================
-CREATE TABLE IF NOT EXISTS estoque (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    empresa_id INT NOT NULL,
-    nome VARCHAR(150) NOT NULL,
-    quantidade INT DEFAULT 0,
-    custo DECIMAL(10,2),
-    preco DECIMAL(10,2),
-    estoque_minimo INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
-);
-
--- =====================================
--- 5. EQUIPAMENTOS
--- =====================================
-CREATE TABLE IF NOT EXISTS equipamentos (
+CREATE TABLE equipamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     cliente_id INT NOT NULL,
@@ -94,9 +65,25 @@ CREATE TABLE IF NOT EXISTS equipamentos (
 );
 
 -- =====================================
--- 6. ORDENS
+-- ESTOQUE
 -- =====================================
-CREATE TABLE IF NOT EXISTS ordens (
+CREATE TABLE estoque (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    nome VARCHAR(150) NOT NULL,
+    quantidade INT DEFAULT 0,
+    custo DECIMAL(10,2),
+    preco DECIMAL(10,2),
+    estoque_minimo INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+);
+
+-- =====================================
+-- ORDENS DE SERVIÇO
+-- =====================================
+CREATE TABLE ordens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     empresa_id INT NOT NULL,
     numero VARCHAR(50),
@@ -118,9 +105,9 @@ CREATE TABLE IF NOT EXISTS ordens (
 );
 
 -- =====================================
--- 7. ITENS ORDEM
+-- ITENS DA ORDEM
 -- =====================================
-CREATE TABLE IF NOT EXISTS itens_ordem (
+CREATE TABLE itens_ordem (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ordem_id INT NOT NULL,
     estoque_id INT NOT NULL,
@@ -133,9 +120,9 @@ CREATE TABLE IF NOT EXISTS itens_ordem (
 );
 
 -- =====================================
--- 8. PAGAMENTOS
+-- PAGAMENTOS
 -- =====================================
-CREATE TABLE IF NOT EXISTS pagamentos (
+CREATE TABLE pagamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ordem_id INT NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
@@ -146,22 +133,3 @@ CREATE TABLE IF NOT EXISTS pagamentos (
     FOREIGN KEY (ordem_id) REFERENCES ordens(id) ON DELETE CASCADE
 );
 
-select * from empresas;
-select * from usuarios;
-
-UPDATE usuarios
-SET senha = '$2b$10$smds95pnuU0ahGTAjAVonu9pQzgTK3ufuoFn4ZYrCNPrTvFqUZ1ou'
-WHERE email = 'admin@teste.com';
-
-SELECT * FROM usuarios WHERE email = 'admin@teste.com';
-SELECT LENGTH(email) FROM usuarios WHERE email = 'admin@teste.com';
-
-
-UPDATE usuarios
-SET senha = '$2b$10$4OKGVynUZbcvuYxXeBvMpeWeDMQR0W1xVaQMWasBCE67yjndbqAau'
-WHERE email = 'admin@teste.com';
-
-
-
-INSERT INTO usuarios (nome, email, senha, empresa_id)
-VALUES ('Administrador', 'admin@teste.com', '$2a$10$SEU_HASH_AQUI', 1);

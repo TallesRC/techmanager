@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 
 export default function Sidebar() {
+
+// PARTE DO LOGOU
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
+
   return (
     <div className="w-64 h-screen bg-gray-900 text-white p-5">
 
@@ -27,6 +35,14 @@ export default function Sidebar() {
         </Link>
 
       </nav>
+
+        <button
+        onClick={logout}
+        className="bg-red-500 px-4 py-2 rounded"
+      >
+        Sair
+      </button>
+
     </div>
   );
 }

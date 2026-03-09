@@ -75,16 +75,14 @@ const login = async (req, res) => {
       return res.status(400).json({ error: "Usuário não encontrado" });
     }
 
-    // compara senha
-    //const senhaValida = await bcrypt.compare(senha, usuario.senha);
-    //if (!senhaValida) {
-    //  return res.status(400).json({ error: "Senha inválida" });
-   // }
-// Ao invés de bcrypt.compare
-if (usuario.senha !== req.body.senha) {
-  return res.status(400).json({ error: "Login inválido" });
-}
-    // gera token JWT
+    // compara senha usando bcrypt
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+    if (!senhaValida) {
+      return res.status(400).json({ error: "Email ou senha inválidos" });
+    }
+
+    // gera token
     const token = jwt.sign(
       {
         id: usuario.id,
