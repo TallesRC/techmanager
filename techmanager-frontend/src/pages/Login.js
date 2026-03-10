@@ -6,7 +6,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  async function handleLogin(e) {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
@@ -16,9 +16,11 @@ function Login() {
         senha
       });
 
-      const token = response.data.token;
+      //const token = response.data.token; pode usar aqui tbm ai fica assim:
+      //localStorage.setItem("token", token);
 
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("usuario", response.data.usuario.nome);
 
       window.location.href = "/dashboard";
 

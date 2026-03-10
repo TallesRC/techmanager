@@ -1,8 +1,10 @@
+
+
 export default function Dashboard() {
 // PARTE DO LOGOUT 
   const logout = () => {
   localStorage.removeItem("token");
-  window.location.href = "/login";
+  window.location.href = "/";
 };
 
   return (

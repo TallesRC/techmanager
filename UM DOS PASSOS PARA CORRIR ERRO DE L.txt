@@ -1,0 +1,39 @@
+UM DOS PASSOS PARA CORRIR ERRO DE LOGIN NO SISTEMA DE GESTÃO EM INFORMÁTICA
+1️⃣ Criar arquivo .env
+
+Dentro da pasta Backend, crie um arquivo:
+
+.env
+
+Exemplo mais seguro:
+
+JWT_SECRET=8f2sdf9sdf8sdf7sdf6sdf6sdf5sdf4sdf3
+
+2️⃣ Instalar dotenv (se ainda não tiver)
+
+Dentro da pasta Backend:
+
+npm install dotenv
+
+3️⃣ Ativar dotenv no servidor
+
+No seu arquivo principal do backend
+(normalmente server.js ou app.js) coloquei nos dois
+
+Adicione logo no topo:
+
+require("dotenv").config();
+
+Exemplo:
+
+require("dotenv").config();
+
+const express = require("express");
+const app = express();
+
+
+4️⃣ Reiniciar o backend
+
+Pare o servidor e rode novamente:
+
+npm run dev
